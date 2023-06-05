@@ -1,5 +1,6 @@
 package com.foodapi.food_service.service;
 
+import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
 
 import com.foodapi.food_service.repo.ProductRepo;
@@ -45,5 +46,7 @@ public class ProductService implements ProductServiceRepo{
         ProductModel product = getProductById(id);
         productRepository.delete(product);
     }
+
+
 }
 

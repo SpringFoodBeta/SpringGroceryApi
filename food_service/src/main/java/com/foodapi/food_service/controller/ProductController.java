@@ -25,11 +25,15 @@ package com.foodapi.food_service.controller;
 //
 //}
 
+import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.service.ProductService;
+import com.foodapi.food_service.service.ProductServiceRepo;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 //inject service into controller
@@ -54,10 +58,14 @@ public class ProductController {
     }
 
     // POST /products
-    @PostMapping
-    public ResponseEntity<ProductModel> createProduct(@RequestBody ProductModel product) {
-        ProductModel createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+    @PostMapping(value = "/addProducts")
+//    public ResponseEntity<ProductModel> createProduct(@RequestBody ProductModel product) {
+//        ProductModel createdProduct = productService.createProduct(product);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+//    }
+    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
+    {
+        return productService.createProduct(product);
     }
 
     // PUT /products/{id}
@@ -73,6 +81,11 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
+
 }
 
 

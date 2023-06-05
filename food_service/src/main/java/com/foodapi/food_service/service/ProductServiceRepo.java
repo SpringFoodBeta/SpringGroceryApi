@@ -5,8 +5,8 @@ import com.foodapi.food_service.repo.ProductRepo;
 
 public interface ProductServiceRepo {
 
-    public ProductModel getProductById(Long id);
-    public ProductModel updateProduct(Long id, ProductModel product);
+     ProductModel getProductById(Long id);
+     ProductModel updateProduct(Long id, ProductModel product);
 
-    public ProductModel createProduct(ProductModel product);
+     ProductModel createProduct(ProductModel product);
 }

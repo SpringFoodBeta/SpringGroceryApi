@@ -2,6 +2,8 @@ package com.foodapi.food_service.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name ="Category")
 public class CategoryModel {
@@ -9,10 +11,15 @@ public class CategoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private long categoryId;
+    public long categoryId;
 
     @Column(name= "category_name")
-    private String categoryName;
+    public String categoryName;
+
+    //fetches the resource
+    //cascade - if theres any update on parent table ,the child table is also updated
+//    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    public List<ProductModel> product;
 
     public CategoryModel()
     {
@@ -20,11 +27,16 @@ public class CategoryModel {
     }
 
 
+
+
     public CategoryModel(long categoryId, String categoryName)
     {
         this.categoryId=categoryId;
         this.categoryName=categoryName;
     }
+
+
+
 
 
 
@@ -46,7 +58,7 @@ public class CategoryModel {
 
     public void setCategoryName(String categoryName)
     {
-        this.categoryName =categoryName;
+        this.categoryName = categoryName;
     }
 
 }

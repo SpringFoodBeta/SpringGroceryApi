@@ -8,10 +8,10 @@ public class ImageModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long imageId;
+    public long imageId;
 
     @Column(name= "imageURL")
-    private String imageURL;
+    public String imageURL;
 
     public ImageModel() {
         super();
