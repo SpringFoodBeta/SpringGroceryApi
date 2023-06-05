@@ -1,13 +1,23 @@
 package com.foodapi.food_service.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-//table creation
 @Table(name = "products")
+@Data
+@Builder
+@AllArgsConstructor
+//@NoArgsConstructor
+
 public class ProductModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "product_id_sequence" , sequenceName = "product_id_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "product_id_sequence")
+
     @Column(name = "product_id")
     private Long productId;
 
@@ -28,7 +38,8 @@ public class ProductModel {
     @JoinColumn(name = "image_id")
     private ImageModel image;
 
-    // Constructors - to initialize the variables or to assign an initial value
+     //Constructors - to initialize the variables or to assign an initial value
+
     public ProductModel() {
     }
 
@@ -75,19 +86,19 @@ public class ProductModel {
         this.description = description;
     }
 
-    public CategoryModel getCategory() {
+    public CategoryModel getCategoryId() {
         return category;
     }
 
-    public void setCategory(CategoryModel category) {
+    public void setCategoryId(CategoryModel category) {
         this.category = category;
     }
 
-    public ImageModel getImage() {
+    public ImageModel getImageId() {
         return image;
     }
 
-    public void setImage(ImageModel image) {
+    public void setImageId(ImageModel image) {
         this.image = image;
     }
 }

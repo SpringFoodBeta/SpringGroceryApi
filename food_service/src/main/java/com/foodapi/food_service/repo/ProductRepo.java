@@ -1,4 +1,8 @@
 package com.foodapi.food_service.repo;
 
-public interface ProductRepo {
+import com.foodapi.food_service.model.ProductModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepo extends JpaRepository<ProductModel,Integer > {
+
 }
