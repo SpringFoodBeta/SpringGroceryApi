@@ -2,9 +2,10 @@ package com.foodapi.image_service;
 
 import com.foodapi.image_service.service.ImageService;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.swing.*;
 
+@SpringBootApplication
 public class ImageServiceApplication {
 
     public static void main(String[] args)

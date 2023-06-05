@@ -11,11 +11,14 @@ public class ImageModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long imageId;
 
-
     @Column(name= "imageURL")
     private String imageURL;
 
-    public ImageModel(Long imageId, String imageURL)
+    public ImageModel() {
+        super();
+    }
+
+    public ImageModel(long imageId, String imageURL)
     {
         this.imageId =imageId;
         this.imageURL=imageURL;
@@ -29,7 +32,7 @@ public class ImageModel {
     }
 
     //setImageId
-    public void setImageId(Long imageId)
+    public void setImageId(long imageId)
     {
         this.imageId=imageId;
     }

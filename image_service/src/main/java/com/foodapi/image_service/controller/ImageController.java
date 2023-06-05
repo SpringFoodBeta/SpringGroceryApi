@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 
 @RestController
-@RequestMapping("Image")
+@RequestMapping("image")
 public class ImageController {
 
     @Autowired
