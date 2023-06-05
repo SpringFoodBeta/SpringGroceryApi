@@ -16,7 +16,7 @@ public class CategoryModel {
     private String categoryName;
 
 
-    public CategoryModel(Long categoryId, String categoryName)
+    public CategoryModel(long categoryId, String categoryName)
     {
         this.categoryId=categoryId;
         this.categoryName=categoryName;
@@ -25,12 +25,12 @@ public class CategoryModel {
 
 
     //get category ID
-    public Long getCategoryId()
+    public long getCategoryId()
     {
         return categoryId;
     }
     //set category id
-    public void setCategoryId(Long categoryId)
+    public void setCategoryId(long categoryId)
     {
         this.categoryId=categoryId;
     }
