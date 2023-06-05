@@ -1,22 +1,14 @@
 package com.foodapi.food_service.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "products")
-@Data
-@Builder
-@AllArgsConstructor
-//@NoArgsConstructor
+
 
 public class ProductModel {
     @Id
-    @SequenceGenerator(name = "product_id_sequence" , sequenceName = "product_id_sequence")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "product_id_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
     @Column(name = "product_id")
     private Long productId;
@@ -43,7 +35,10 @@ public class ProductModel {
     public ProductModel() {
     }
 
-    public ProductModel(String name, double price, String description, CategoryModel category, ImageModel image) {
+
+
+    public ProductModel(Long productId, String name, double price, String description, CategoryModel category, ImageModel image) {
+        this.productId = productId;
         this.name = name;
         this.price = price;
         this.description = description;
@@ -53,6 +48,7 @@ public class ProductModel {
 
     // getters - to get the value, (returns the variable value)
     // setters - to set the value, (sets the value.)
+
 
     public Long getProductId() {
         return productId;
@@ -86,19 +82,19 @@ public class ProductModel {
         this.description = description;
     }
 
-    public CategoryModel getCategoryId() {
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategoryId(CategoryModel category) {
+    public void setCategory(CategoryModel category) {
         this.category = category;
     }
 
-    public ImageModel getImageId() {
+    public ImageModel getImage() {
         return image;
     }
 
-    public void setImageId(ImageModel image) {
+    public void setImage(ImageModel image) {
         this.image = image;
     }
 }

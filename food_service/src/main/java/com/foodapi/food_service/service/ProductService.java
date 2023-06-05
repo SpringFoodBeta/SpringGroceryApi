@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Service
-public class ProductService {
+public class ProductService implements ProductServiceRepo{
 
     private ProductRepo productRepository;
 
@@ -20,7 +20,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductModel getProductById(Integer id) {
+    public ProductModel getProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
@@ -30,18 +30,18 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ProductModel updateProduct(Integer id, ProductModel product) {
+    public ProductModel updateProduct(Long id, ProductModel product) {
         ProductModel existingProduct = getProductById(id);
         // Update the attributes of the existingProduct with the attributes from the product
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
-        existingProduct.setCategoryId(product.getCategoryId());
-        existingProduct.setImageId(product.getImageId());
+        existingProduct.setCategory(product.getCategory());
+        existingProduct.setImage(product.getImage());
         return productRepository.save(existingProduct);
     }
 
-    public void deleteProduct(Integer id) {
+    public void deleteProduct(Long id) {
         ProductModel product = getProductById(id);
         productRepository.delete(product);
     }
