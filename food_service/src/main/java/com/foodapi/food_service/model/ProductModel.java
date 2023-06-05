@@ -40,8 +40,8 @@ public class ProductModel {
         this.image = image;
     }
 
-    // getters - to get the value, returns the variable value
-    // setters - to set the value, sets the value.
+    // getters - to get the value, (returns the variable value)
+    // setters - to set the value, (sets the value.)
 
     public Long getProductId() {
         return productId;
