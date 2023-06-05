@@ -1,9 +1,14 @@
 package com.foodapi.food_service.service;
 
 import com.foodapi.food_service.model.ProductModel;
+
 import com.foodapi.food_service.repo.ProductRepo;
+//inject repository into service
+
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Service
 public class ProductService {
