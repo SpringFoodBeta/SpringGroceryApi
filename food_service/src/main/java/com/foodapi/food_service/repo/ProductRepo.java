@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductRepo extends JpaRepository<ProductModel,Long>, JpaSpecificationExecutor<ProductModel> {
-    default List<ProductModel> findByCategory(String productName, String categoryName){
+     default List<ProductModel> findByCategory(String productName, String categoryName){
         return findAll((new Specification<ProductModel>() {
             @Override
             public Predicate toPredicate(Root<ProductModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
