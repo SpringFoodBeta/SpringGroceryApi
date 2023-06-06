@@ -27,6 +27,7 @@ package com.foodapi.food_service.controller;
 
 import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
+import com.foodapi.food_service.repo.ProductRepo;
 import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
@@ -35,6 +36,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //inject service into controller
 
@@ -81,10 +84,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
+//get mapping for the search and filter also call it here
 
 }
 
