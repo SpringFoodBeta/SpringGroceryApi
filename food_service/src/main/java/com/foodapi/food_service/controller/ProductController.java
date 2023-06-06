@@ -95,14 +95,6 @@ public class ProductController {
 
         return products;
     }
-
-    //Search and filter
-//    @GetMapping("/search")
-//    public ResponseEntity<Object> findByCategory(@RequestParam(required = false) String productName,
-//                                                       @RequestParam(required = false) String categoryName) {
-//       List
-//
-//    }
 }
 
 
