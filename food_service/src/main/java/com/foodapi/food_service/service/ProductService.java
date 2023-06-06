@@ -10,6 +10,9 @@ import com.foodapi.food_service.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class ProductService implements ProductServiceRepo{
@@ -19,6 +22,13 @@ public class ProductService implements ProductServiceRepo{
     @Autowired
     public ProductService(ProductRepo productRepository) {
         this.productRepository = productRepository;
+    }
+
+    public List<ProductModel> getAllProducts() {
+        List<ProductModel> products = new ArrayList<ProductModel>();
+        productRepository.findAll()
+                .forEach(product -> products.add(product));
+        return products;
     }
 
     public ProductModel getProductById(Long id) {

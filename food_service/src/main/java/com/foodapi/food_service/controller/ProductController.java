@@ -36,6 +36,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //inject service into controller
 
 @RestController
@@ -50,8 +52,13 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping(value = "/getAllProducts")
+    public List<ProductModel> getAllProducts(){
+        return productService.getAllProducts();
+    }
+
     // GET /products/{id}
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ProductModel> getProductById(@PathVariable("id") Long id) {
         ProductModel product = productService.getProductById(id);
         return ResponseEntity.ok(product);
@@ -59,24 +66,20 @@ public class ProductController {
 
     // POST /products
     @PostMapping(value = "/addProducts")
-//    public ResponseEntity<ProductModel> createProduct(@RequestBody ProductModel product) {
-//        ProductModel createdProduct = productService.createProduct(product);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
-//    }
     public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
     {
         return productService.createProduct(product);
     }
 
     // PUT /products/{id}
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
         ProductModel updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
     // DELETE /products/{id}
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
