@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductRepo extends JpaRepository<ProductModel,Long>, JpaSpecificationExecutor<ProductModel> {
-     default List<ProductModel> findByCategory(String productName, String categoryName){
+     default List<ProductModel> findByCategory(String productName, double price, String categoryName){
         return findAll((new Specification<ProductModel>() {
             @Override
             public Predicate toPredicate(Root<ProductModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -19,11 +19,15 @@ public interface ProductRepo extends JpaRepository<ProductModel,Long>, JpaSpecif
                 if(productName != null){
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), productName)));
                 }
+                if(price != 0){
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("price"), price)));
+                }
+
                 if(categoryName != null){
                     Join<ProductModel, CategoryModel> prodCategoryJoin = root.join("category");
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(prodCategoryJoin.get("categoryName"), categoryName)));
                 }
-                //return criteriaBuilder.and(predicates.toArray( new Predicate[0]));
+
                 return criteriaBuilder.and(predicates.toArray( new Predicate[predicates.size()]));
             }
         }));

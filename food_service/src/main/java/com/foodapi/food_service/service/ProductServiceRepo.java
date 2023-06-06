@@ -12,5 +12,5 @@ public interface ProductServiceRepo {
 
      ProductModel createProduct(ProductModel product);
 
-     List<ProductModel> findByCategory(String productName, String categoryName);
+     List<ProductModel> findByCategory(String productName, double price, String categoryName);
 }

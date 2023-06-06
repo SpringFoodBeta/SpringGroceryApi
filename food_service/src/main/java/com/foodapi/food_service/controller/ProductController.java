@@ -89,8 +89,9 @@ public class ProductController {
     //searching and filtering
     @GetMapping("/search")
     public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
+                                                      @RequestParam(required = false) double price,
                                                       @RequestParam(required = false) String categoryName){
-        List<ProductModel> products = productService.findByCategory(productName, categoryName);
+        List<ProductModel> products = productService.findByCategory(productName, price, categoryName);
 
         return products;
     }
