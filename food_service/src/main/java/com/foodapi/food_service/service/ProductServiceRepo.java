@@ -13,4 +13,6 @@ public interface ProductServiceRepo {
      ProductModel updateProduct(Long id, ProductModel product);
 
      ProductModel createProduct(ProductModel product);
+
+     List<ProductModel> findByCategory(String productName, String categoryName);
 }

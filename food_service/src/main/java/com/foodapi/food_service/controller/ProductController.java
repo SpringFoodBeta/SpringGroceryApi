@@ -30,6 +30,7 @@ import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
+import org.apache.http.client.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,6 +86,18 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+    //searching and filtering
+    @GetMapping("/search")
+    public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
+                                                      @RequestParam(required = false) String categoryName){
+        List<ProductModel> products = productService.findByCategory(productName, categoryName);
+
+        return products;
+    }
+
 }
 
 

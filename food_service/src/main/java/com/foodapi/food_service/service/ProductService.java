@@ -1,6 +1,5 @@
 package com.foodapi.food_service.service;
 
-import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
 
 import com.foodapi.food_service.repo.ProductRepo;
@@ -19,7 +18,7 @@ import java.util.List;
 @Service
 public class ProductService implements ProductServiceRepo{
 
-    private ProductRepo productRepository;
+    private final ProductRepo productRepository;
 
     @Autowired  //This allows the service to interact with the database through the repository.
     public ProductService(ProductRepo productRepository) {
@@ -58,5 +57,11 @@ public class ProductService implements ProductServiceRepo{
         ProductModel product = getProductById(id);
         productRepository.delete(product);
     }
+
+    //search and filter
+    public List<ProductModel> findByCategory(String productName, String categoryName){
+        return productRepository.findByCategory(productName, categoryName);
+    }
+
 }
 
