@@ -1,6 +1,5 @@
 package com.foodapi.food_service.service;
 
-import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
 
 import com.foodapi.food_service.repo.ProductRepo;
@@ -9,6 +8,8 @@ import com.foodapi.food_service.repo.ProductRepo;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 
 @Service
@@ -47,6 +48,9 @@ public class ProductService implements ProductServiceRepo{
         productRepository.delete(product);
     }
 
-
+    //search and filter
+    public List<ProductModel> findByCategory(String productName, String categoryName){
+        return productRepository.findByCategory(productName, categoryName);
+    }
 }
 

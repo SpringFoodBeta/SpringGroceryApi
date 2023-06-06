@@ -30,11 +30,14 @@ import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
+import org.apache.http.client.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //inject service into controller
 
@@ -83,9 +86,22 @@ public class ProductController {
     }
 
 
+    //searching and filtering
+    @GetMapping("/search")
+    public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
+                                                      @RequestParam(required = false) String categoryName){
+        List<ProductModel> products = productService.findByCategory(productName, categoryName);
 
+        return products;
+    }
 
-
+    //Search and filter
+//    @GetMapping("/search")
+//    public ResponseEntity<Object> findByCategory(@RequestParam(required = false) String productName,
+//                                                       @RequestParam(required = false) String categoryName) {
+//       List
+//
+//    }
 }
 
 
