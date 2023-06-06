@@ -59,8 +59,8 @@ public class ProductService implements ProductServiceRepo{
     }
 
     //search and filter
-    public List<ProductModel> findByCategory(String productName, String categoryName){
-        return productRepository.findByCategory(productName, categoryName);
+    public List<ProductModel> findByCategory(String productName, double price, String categoryName){
+        return productRepository.findByCategory(productName, price, categoryName);
     }
 
 }
