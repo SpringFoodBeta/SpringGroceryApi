@@ -27,6 +27,7 @@ package com.foodapi.food_service.controller;
 
 import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
+import com.foodapi.food_service.repo.ProductRepo;
 import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
@@ -85,17 +86,6 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
-    }
-
-
-
-    //searching and filtering
-    @GetMapping("/search")
-    public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
-                                                      @RequestParam(required = false) String categoryName){
-        List<ProductModel> products = productService.findByCategory(productName, categoryName);
-
-        return products;
     }
 
 }
