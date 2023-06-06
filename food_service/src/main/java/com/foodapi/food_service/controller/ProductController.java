@@ -47,48 +47,44 @@ public class ProductController {
 
     private ProductService productService;
 
-    @Autowired
+    @Autowired //This allows the controller to use the methods provided by the service.
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
+    //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
     public List<ProductModel> getAllProducts(){
         return productService.getAllProducts();
     }
 
-    // GET /products/{id}
+    // GET product by id - (view one by fetching it with its ID)
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductModel> getProductById(@PathVariable("id") Long id) {
         ProductModel product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
-    // POST /products
+    // POST product - (add a product to the database)
     @PostMapping(value = "/addProducts")
     public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
     {
         return productService.createProduct(product);
     }
 
-    // PUT /products/{id}
+    // PUT - (update a product by an ID)
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
         ProductModel updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
-    // DELETE /products/{id}
+    // DELETE - (delete a product by an ID)
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
 }
 
 
