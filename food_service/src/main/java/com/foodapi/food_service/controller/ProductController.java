@@ -31,6 +31,7 @@ import com.foodapi.food_service.repo.ProductRepo;
 import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
+import org.apache.http.client.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,49 +43,50 @@ import java.util.List;
 //inject service into controller
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 
 public class ProductController {
 
     private ProductService productService;
 
-    @Autowired
+    @Autowired //This allows the controller to use the methods provided by the service.
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    // GET /products/{id}
-    @GetMapping("/{id}")
+    //GET all products - (view all products)
+    @GetMapping(value = "/getAllProducts")
+    public List<ProductModel> getAllProducts(){
+        return productService.getAllProducts();
+    }
+
+    // GET product by id - (view one by fetching it with its ID)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ProductModel> getProductById(@PathVariable("id") Long id) {
         ProductModel product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
-    // POST /products
+    // POST product - (add a product to the database)
     @PostMapping(value = "/addProducts")
-//    public ResponseEntity<ProductModel> createProduct(@RequestBody ProductModel product) {
-//        ProductModel createdProduct = productService.createProduct(product);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
-//    }
     public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
     {
         return productService.createProduct(product);
     }
 
-    // PUT /products/{id}
-    @PutMapping("/{id}")
+    // PUT - (update a product by an ID)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
         ProductModel updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
-    // DELETE /products/{id}
-    @DeleteMapping("/{id}")
+    // DELETE - (delete a product by an ID)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-//get mapping for the search and filter also call it here
 
 }
 
