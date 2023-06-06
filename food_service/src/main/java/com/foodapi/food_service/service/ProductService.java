@@ -9,17 +9,27 @@ import com.foodapi.food_service.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
+//write the business logic
+//definition of our functions
 
 @Service
 public class ProductService implements ProductServiceRepo{
 
     private final ProductRepo productRepository;
 
-    @Autowired
+    @Autowired  //This allows the service to interact with the database through the repository.
     public ProductService(ProductRepo productRepository) {
         this.productRepository = productRepository;
+    }
+
+    public List<ProductModel> getAllProducts() {
+        List<ProductModel> products = new ArrayList<ProductModel>();
+        productRepository.findAll()
+                .forEach(product -> products.add(product));
+        return products;
     }
 
     public ProductModel getProductById(Long id) {
@@ -52,5 +62,6 @@ public class ProductService implements ProductServiceRepo{
     public List<ProductModel> findByCategory(String productName, String categoryName){
         return productRepository.findByCategory(productName, categoryName);
     }
+
 }
 
