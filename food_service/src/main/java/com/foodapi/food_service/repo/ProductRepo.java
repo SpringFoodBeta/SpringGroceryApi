@@ -12,16 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductRepo extends JpaRepository<ProductModel,Long>, JpaSpecificationExecutor<ProductModel> {
-     default List<ProductModel> findByCategory(String productName, double price, String categoryName){
+     default List<ProductModel> findByCategory(String productName, String categoryName){
         return findAll((new Specification<ProductModel>() {
             @Override
             public Predicate toPredicate(Root<ProductModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if(productName != null){
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), productName)));
-                }
-                if(price != 0){
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("price"), price)));
                 }
 
                 if(categoryName != null){
