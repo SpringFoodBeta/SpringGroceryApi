@@ -41,7 +41,7 @@ import java.util.List;
 //inject service into controller
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 
 public class ProductController {
 
