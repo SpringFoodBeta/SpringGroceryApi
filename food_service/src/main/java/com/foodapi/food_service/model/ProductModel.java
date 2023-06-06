@@ -2,6 +2,10 @@ package com.foodapi.food_service.model;
 
 import jakarta.persistence.*;
 
+import javax.validation.constraints.*;
+
+
+
 @Entity
 @Table(name = "products")
 
@@ -14,9 +18,11 @@ public class ProductModel {
     private Long productId;
 
     @Column(name = "name")
+    @NotNull(message = "Product name is required")
     private String name;
 
     @Column(name = "price")
+    @NotNull(message = "Product Price is required")
     private double price;
 
     @Column(name = "description")
