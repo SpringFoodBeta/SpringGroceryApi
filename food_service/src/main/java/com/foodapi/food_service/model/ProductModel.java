@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "products")
 
-
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
