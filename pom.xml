@@ -11,6 +11,7 @@
     <modules>
         <module>food_service</module>
         <module>image_service</module>
+        <module>image_service</module>
     </modules>
 
     <properties>

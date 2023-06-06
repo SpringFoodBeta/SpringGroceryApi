@@ -1,16 +1,18 @@
-package com.foodapi.food_service.model;
+package com.foodapi.image_service.model;
+
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "image")
 public class ImageModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long imageId;
+    private long imageId;
 
     @Column(name= "imageURL")
-    public String imageURL;
+    private String imageURL;
 
     public ImageModel() {
         super();

@@ -1,20 +1,18 @@
 package com.foodapi.food_service.model;
 
+
 import jakarta.persistence.*;
-
-import java.util.List;
-
 @Entity
 @Table(name ="Category")
 public class CategoryModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    public long categoryId;
+    @Column(name = "categoryId")
+    private Long categoryId;
 
-    @Column(name= "category_name")
-    public String categoryName;
+    @Column(name= "categoryName")
+    private String categoryName;
 
     //fetches the resource
     //cascade - if theres any update on parent table ,the child table is also updated
@@ -28,17 +26,11 @@ public class CategoryModel {
 
 
 
-
     public CategoryModel(long categoryId, String categoryName)
     {
         this.categoryId=categoryId;
         this.categoryName=categoryName;
     }
-
-
-
-
-
 
     //get category ID
     public long getCategoryId()
@@ -58,7 +50,8 @@ public class CategoryModel {
 
     public void setCategoryName(String categoryName)
     {
-        this.categoryName = categoryName;
+        this.categoryName =categoryName;
     }
+
 
 }
