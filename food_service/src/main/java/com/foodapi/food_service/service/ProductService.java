@@ -13,13 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
+//write the business logic
+//definition of our functions
 
 @Service
 public class ProductService implements ProductServiceRepo{
 
     private ProductRepo productRepository;
 
-    @Autowired
+    @Autowired  //This allows the service to interact with the database through the repository.
     public ProductService(ProductRepo productRepository) {
         this.productRepository = productRepository;
     }
@@ -56,7 +58,5 @@ public class ProductService implements ProductServiceRepo{
         ProductModel product = getProductById(id);
         productRepository.delete(product);
     }
-
-
 }
 

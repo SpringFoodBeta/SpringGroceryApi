@@ -22,6 +22,7 @@ public class ProductModel {
     @Column(name = "description")
     private String description;
 
+    //updates the table to get the latest data
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private CategoryModel category;

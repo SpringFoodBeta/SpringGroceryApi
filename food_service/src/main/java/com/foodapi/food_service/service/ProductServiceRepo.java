@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProductServiceRepo {
 
+     //declaration of functions
      List<ProductModel> getAllProducts();
      ProductModel getProductById(Long id);
      ProductModel updateProduct(Long id, ProductModel product);
