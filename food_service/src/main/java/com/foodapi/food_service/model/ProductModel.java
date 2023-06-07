@@ -18,14 +18,15 @@ public class ProductModel {
     private Long productId;
 
     @Column(name = "name")
-    @NotNull(message = "Product name is required")
+    @NotBlank(message = "Product name is required!")
     private String name;
 
     @Column(name = "price")
-    @NotNull(message = "Product Price is required")
+    @NotBlank(message = "Product Price is required")
     private double price;
 
     @Column(name = "description")
+    @NotNull(message = "Description cannot be empty!")
     private String description;
 
     //updates the table to get the latest data
