@@ -75,27 +75,6 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Object>  findByCategory(@RequestParam(required = false) String productName,
-                                                  @RequestParam(required = false) String categoryName){
-        try {
-            List<ProductModel> products = productService.findByCategory(productName, categoryName);
-            if(productName != null && categoryName != null && !products.isEmpty())
-            {
-                return ResponseHandler.generateResponse("We have the product that you have mentioned", HttpStatus.OK, products);
-
-            }else {
-                return ResponseHandler.generateResponse("Error while retrieving products by category:", HttpStatus.OK, null);
-
-            }
-        }catch(Exception ex)
-        {
-            return ResponseHandler.generateResponse(ex.getMessage(), HttpStatus.MULTI_STATUS, null);
-
-        }
-
-    }
-
     // GET product by id - (view one by fetching it with its ID)
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductModel> getProductById(@PathVariable("id") Long id) {
@@ -103,12 +82,6 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    // POST product - (add a product to the database)
-//    @PostMapping(value = "/addProducts")
-//    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
-//    {
-//        return productService.createProduct(product);
-//    }
     @PostMapping(value = "/addProducts")
     public ResponseEntity<Object> createProduct(@Validated @NonNull @RequestBody(required = false) ProductModel product) {
         try {
@@ -128,7 +101,6 @@ public class ProductController {
                     product.getCategory().getName().trim().isEmpty()) {
                 throw new IllegalArgumentException("Required!!! Category field cannot be empty");
             }
-
             // Perform price validation
             if (Objects.isNull(product.getPrice()) ) {
                 throw new IllegalArgumentException("Required!!! Price field cannot be empty!");
@@ -158,8 +130,6 @@ public class ProductController {
         }
     }
 
-
-
     // PUT - (update a product by an ID)
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
@@ -174,10 +144,23 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    // SEARCH and FILTERING
+    @GetMapping("/search")
+    public ResponseEntity<Object> findByCategory(@RequestParam(required = false) String productName,
+                                                             @RequestParam(required = false) String categoryName) {
+        try {
+            List<ProductModel> searchResults = productService.findByCategory(productName, categoryName);
 
-    //searching and filtering
-    // GET
-
+            if (searchResults.isEmpty()) {
+                return ResponseHandler.generateResponse("Not Found!!!", HttpStatus.NOT_FOUND, searchResults);
+            }
+            return ResponseHandler.generateResponse("Search Found!!!", HttpStatus.OK, searchResults);
+            //return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            // Handle the exception and return an appropriate response
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+    }
 
 }
 
