@@ -103,14 +103,14 @@ public class ProductController {
         try {
             List<ProductModel> products = productService.findByCategory(productName, categoryName);
             return products;
-        }catch(ProductAPIRequestException ex)
+        }catch(Exception ex)
         {
 
             String errorMessage = "Error retrieving products: " + ex.getMessage();
             // Log the error
             logger.error(errorMessage);
             // Return a default response or an empty list of products
-            return Collections.emptyList();
+            return Collections.emptyList() ;
         }
 
 
