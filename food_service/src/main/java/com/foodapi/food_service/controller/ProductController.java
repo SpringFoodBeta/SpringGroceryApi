@@ -25,13 +25,10 @@ package com.foodapi.food_service.controller;
 //
 //}
 
-import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
-import com.foodapi.food_service.repo.ProductRepo;
+import com.foodapi.food_service.response.ResponseHandler;
 import com.foodapi.food_service.service.ProductService;
-import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
-import org.apache.http.client.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 
 //inject service into controller
 
@@ -48,17 +46,31 @@ import java.util.List;
 
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired //This allows the controller to use the methods provided by the service.
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
+//    @GetMapping(value = "/getAllProducts")
+//    public List<ProductModel> getAllProducts(){
+//        return productService.getAllProducts();
+//    }
+
     //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
-    public List<ProductModel> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<Object> Get() {
+        try {
+            List<ProductModel> products = productService.getAllProducts();
+            if (products.size() > 0){
+                return ResponseHandler.generateResponse("Successfully retrieved products!", HttpStatus.OK, products);
+            } else {
+                return ResponseHandler.generateResponse("No products found! Add a new product!", HttpStatus.OK, products);
+            }
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     // GET product by id - (view one by fetching it with its ID)
@@ -69,12 +81,38 @@ public class ProductController {
     }
 
     // POST product - (add a product to the database)
+//    @PostMapping(value = "/addProducts")
+//    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
+//    {
+//        return productService.createProduct(product);
+//    }
     @PostMapping(value = "/addProducts")
-    @NotBlank(message = "Product name is required!")
-    public ProductModel createProduct(@Validated @NonNull @RequestBody @NotBlank ProductModel product)
-    {
-        return productService.createProduct(product);
+    public ResponseEntity<Object> createProduct(@Validated @NonNull @RequestBody(required = false) ProductModel product) {
+        try {
+            if (product == null) {
+                throw new IllegalArgumentException("Product details are missing in the request body.");
+            }
+
+            // Perform attribute validation
+            if (product.getName() == null || product.getName().trim().isEmpty() || Objects.isNull(product.getPrice()) || product.getDescription() == null || product.getCategory() == null) {
+                throw new IllegalArgumentException("One or more required product attributes are missing.");
+            }
+
+            ProductModel prod = productService.createProduct(product);
+
+            if (prod != null) {
+                return ResponseHandler.generateResponse("Successfully added product!", HttpStatus.OK, prod);
+            } else {
+                return ResponseHandler.generateResponse("Failed to add product.", HttpStatus.BAD_REQUEST, prod);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
+
+
 
     // PUT - (update a product by an ID)
     @PutMapping(value = "/{id}")
@@ -91,6 +129,7 @@ public class ProductController {
     }
 
     //searching and filtering
+    // GET
     @GetMapping("/search")
     public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
                                                       @RequestParam(required = false) String categoryName){
@@ -98,6 +137,7 @@ public class ProductController {
 
         return products;
     }
+
 }
 
 
