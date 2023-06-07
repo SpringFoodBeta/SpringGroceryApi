@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.List;
 import org.apache.logging.log4j.Logger;
 import java.util.Objects;
@@ -114,14 +115,37 @@ public class ProductController {
             if (product == null) {
                 throw new IllegalArgumentException("Product details are missing in the request body.");
             }
-
-            // Perform attribute validation
-            if (product.getName() == null || product.getName().trim().isEmpty() || Objects.isNull(product.getPrice()) || product.getDescription() == null || product.getCategory() == null) {
-                throw new IllegalArgumentException("One or more required product attributes are missing.");
+            // Perform name validation
+            if (product.getName() == null || product.getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Required!!! Name field cannot be empty!");
+            }
+            // Perform description validation
+            if (product.getDescription() == null || product.getDescription().trim().isEmpty()) {
+                throw new IllegalArgumentException("Required!!! Description field cannot be empty!");
+            }
+            // Perform category validation
+            if (product.getCategory() == null ||
+                    product.getCategory().getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Required!!! Category field cannot be empty");
             }
 
-            ProductModel prod = productService.createProduct(product);
+            // Perform price validation
+            if (Objects.isNull(product.getPrice()) ) {
+                throw new IllegalArgumentException("Required!!! Price field cannot be empty!");
+            }
 
+            // Validate that the price attribute is a double
+//            if (product.getPrice().getClass() != Double.class) {
+//                throw new IllegalArgumentException("Price must be a valid double value.");
+//            }
+
+            // Type validation and conversion for the price attribute
+            double price = (Double) product.getPrice();
+
+            // Set the converted price value back to the product object
+            product.setPrice(price);
+
+            ProductModel prod = productService.createProduct(product);
             if (prod != null) {
                 return ResponseHandler.generateResponse("Successfully added product!", HttpStatus.OK, prod);
             } else {
