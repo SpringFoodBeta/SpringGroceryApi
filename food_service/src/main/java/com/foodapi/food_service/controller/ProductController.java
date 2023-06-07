@@ -33,6 +33,7 @@ import com.foodapi.food_service.service.ProductService;
 import com.foodapi.food_service.service.ProductServiceRepo;
 import lombok.NonNull;
 import org.apache.http.client.ResponseHandler;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.ErrorManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //inject service into controller
 
@@ -91,6 +93,9 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    private static final Logger logger = LogManager.getLogger(ProductController.class);
+
+
     //searching and filtering
     @GetMapping("/search")
     public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
@@ -100,10 +105,12 @@ public class ProductController {
             return products;
         }catch(ProductAPIRequestException ex)
         {
+
             String errorMessage = "Error retrieving products: " + ex.getMessage();
-
-
-            return  Collections.singletonList(new ProductModel(errorMessage));
+            // Log the error
+            logger.error(errorMessage);
+            // Return a default response or an empty list of products
+            return Collections.emptyList();
         }
 
 
