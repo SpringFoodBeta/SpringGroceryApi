@@ -36,6 +36,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 //inject service into controller
 
@@ -79,15 +80,37 @@ public class ProductController {
     }
 
     // POST product - (add a product to the database)
-    @PostMapping(value = "/addProducts")
-    public ResponseEntity<ProductModel> createProduct(@Validated @NonNull @RequestBody ProductModel product) {
-        ProductModel createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
-    }
+//    @PostMapping(value = "/addProducts")
 //    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
 //    {
 //        return productService.createProduct(product);
 //    }
+    @PostMapping(value = "/addProducts")
+    public ResponseEntity<Object> createProduct(@Validated @NonNull @RequestBody(required = false) ProductModel product) {
+        try {
+            if (product == null) {
+                throw new IllegalArgumentException("Product details are missing in the request body.");
+            }
+
+            // Perform attribute validation
+            if (product.getName() == null || product.getName().trim().isEmpty() || Objects.isNull(product.getPrice()) || product.getDescription() == null || product.getCategory() == null) {
+                throw new IllegalArgumentException("One or more required product attributes are missing.");
+            }
+
+            ProductModel prod = productService.createProduct(product);
+
+            if (prod != null) {
+                return ResponseHandler.generateResponse("Successfully added product!", HttpStatus.OK, prod);
+            } else {
+                return ResponseHandler.generateResponse("Failed to add product.", HttpStatus.BAD_REQUEST, prod);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+    }
+
 
 
     // PUT - (update a product by an ID)
