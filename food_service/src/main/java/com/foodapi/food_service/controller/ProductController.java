@@ -62,7 +62,7 @@ public class ProductController {
 
     //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
-    public ResponseEntity<Object> Get() {
+    public ResponseEntity<Object> getAllProducts() {
         try {
             List<ProductModel> products = productService.getAllProducts();
             if (products.size() > 0){
@@ -77,10 +77,15 @@ public class ProductController {
 
     // GET product by id - (view one by fetching it with its ID)
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductModel> getProductById(@PathVariable("id") Long id) {
-        ProductModel product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<Object> getProductById(@PathVariable Long id) {
+        try {
+            ProductModel product = productService.getProductById(id);
+            return ResponseHandler.generateResponse("Successfully retrieved product!", HttpStatus.OK, product);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
+
 
     @PostMapping(value = "/addProducts")
     public ResponseEntity<Object> createProduct(@Validated @NonNull @RequestBody(required = false) ProductModel product) {
