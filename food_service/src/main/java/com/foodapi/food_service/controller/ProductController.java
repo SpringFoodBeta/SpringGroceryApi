@@ -24,21 +24,27 @@ package com.foodapi.food_service.controller;
 //
 //
 //}
+import com.foodapi.food_service.exception.ProductAPIRequestException;
+import com.foodapi.food_service.model.CategoryModel;
 
 import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.response.ResponseHandler;
 import com.foodapi.food_service.service.ProductService;
 import lombok.NonNull;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.List;
+import org.apache.logging.log4j.Logger;
 import java.util.Objects;
+
 
 //inject service into controller
 
@@ -67,6 +73,27 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Object>  findByCategory(@RequestParam(required = false) String productName,
+                                                  @RequestParam(required = false) String categoryName){
+        try {
+            List<ProductModel> products = productService.findByCategory(productName, categoryName);
+            if(productName != null && categoryName != null && !products.isEmpty())
+            {
+                return ResponseHandler.generateResponse("We have the product that you have mentioned", HttpStatus.OK, products);
+
+            }else {
+                return ResponseHandler.generateResponse("Error while retrieving products by category:", HttpStatus.OK, null);
+
+            }
+        }catch(Exception ex)
+        {
+            return ResponseHandler.generateResponse(ex.getMessage(), HttpStatus.MULTI_STATUS, null);
+
+        }
+
     }
 
     // GET product by id - (view one by fetching it with its ID)
@@ -147,15 +174,10 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+
     //searching and filtering
     // GET
-    @GetMapping("/search")
-    public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
-                                                      @RequestParam(required = false) String categoryName){
-        List<ProductModel> products = productService.findByCategory(productName, categoryName);
 
-        return products;
-    }
 
 }
 

@@ -49,6 +49,9 @@ public class ProductModel {
         this.image = image;
     }
 
+    public ProductModel(String errorMessage) {
+    }
+
     // getters - to get the value, (returns the variable value)
     // setters - to set the value, (sets the value.)
 
