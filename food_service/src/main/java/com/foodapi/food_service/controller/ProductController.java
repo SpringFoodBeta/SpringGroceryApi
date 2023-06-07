@@ -53,11 +53,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @GetMapping(value = "/getAllProducts")
-//    public List<ProductModel> getAllProducts(){
-//        return productService.getAllProducts();
-//    }
-
     //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
     public ResponseEntity<Object> Get() {
@@ -66,7 +61,7 @@ public class ProductController {
             if (products.size() > 0){
                 return ResponseHandler.generateResponse("Successfully retrieved products!", HttpStatus.OK, products);
             } else {
-                return ResponseHandler.generateResponse("No products found! Add a new product!", HttpStatus.OK, products);
+                return ResponseHandler.generateResponse("No products found! Add a new product!", HttpStatus.NOT_FOUND, products);
             }
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
