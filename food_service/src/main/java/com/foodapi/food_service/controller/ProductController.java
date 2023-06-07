@@ -80,10 +80,15 @@ public class ProductController {
 
     // POST product - (add a product to the database)
     @PostMapping(value = "/addProducts")
-    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
-    {
-        return productService.createProduct(product);
+    public ResponseEntity<ProductModel> createProduct(@Validated @NonNull @RequestBody ProductModel product) {
+        ProductModel createdProduct = productService.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
+//    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
+//    {
+//        return productService.createProduct(product);
+//    }
+
 
     // PUT - (update a product by an ID)
     @PutMapping(value = "/{id}")
