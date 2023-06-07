@@ -17,14 +17,24 @@ public interface ProductRepo extends JpaRepository<ProductModel,Long>, JpaSpecif
             @Override
             public Predicate toPredicate(Root<ProductModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                if(productName != null){
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), productName)));
+
+//                if(productName != null){
+//                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), productName)));
+//                }
+
+//                if(categoryName != null){
+//                    Join<ProductModel, CategoryModel> prodCategoryJoin = root.join("category");
+//                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(prodCategoryJoin.get("categoryName"), categoryName)));
+//                }
+                if (productName != null) {
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + productName.toLowerCase() + "%"));
                 }
-                if(categoryName != null){
+                if (categoryName != null) {
                     Join<ProductModel, CategoryModel> prodCategoryJoin = root.join("category");
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(prodCategoryJoin.get("categoryName"), categoryName)));
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(prodCategoryJoin.get("categoryName")), "%" + categoryName.toLowerCase() + "%" ));
                 }
-                //return criteriaBuilder.and(predicates.toArray( new Predicate[0]));
+
+
                 return criteriaBuilder.and(predicates.toArray( new Predicate[predicates.size()]));
             }
         }));

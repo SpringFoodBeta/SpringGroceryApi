@@ -88,6 +88,14 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    //searching and filtering
+    @GetMapping("/search")
+    public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
+                                                      @RequestParam(required = false) String categoryName){
+        List<ProductModel> products = productService.findByCategory(productName, categoryName);
+
+        return products;
+    }
 }
 
 

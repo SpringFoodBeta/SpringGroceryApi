@@ -9,7 +9,6 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "products")
 
-
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
