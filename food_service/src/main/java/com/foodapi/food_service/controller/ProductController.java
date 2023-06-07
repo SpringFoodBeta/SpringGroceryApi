@@ -38,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 //inject service into controller
@@ -69,7 +70,8 @@ public class ProductController {
 
     // POST product - (add a product to the database)
     @PostMapping(value = "/addProducts")
-    public ProductModel createProduct(@Validated @NonNull @RequestBody ProductModel product)
+    @NotBlank(message = "Product name is required!")
+    public ProductModel createProduct(@Validated @NonNull @RequestBody @NotBlank ProductModel product)
     {
         return productService.createProduct(product);
     }

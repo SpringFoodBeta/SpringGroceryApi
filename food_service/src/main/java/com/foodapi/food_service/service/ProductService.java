@@ -2,6 +2,8 @@ package com.foodapi.food_service.service;
 
 import com.foodapi.food_service.model.ProductModel;
 
+import com.foodapi.food_service.model.ProductModel;
+
 import com.foodapi.food_service.repo.ProductRepo;
 //inject repository into service
 
@@ -38,8 +40,17 @@ public class ProductService implements ProductServiceRepo{
     }
 
     public ProductModel createProduct(ProductModel product) {
+
+
         // Additional logic/validation can be implemented here
-        return productRepository.save(product);
+
+        try {
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return productRepository.save(product) ;
     }
 
     public ProductModel updateProduct(Long id, ProductModel product) {

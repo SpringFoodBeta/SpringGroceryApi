@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.*;
 
-
-
 @Entity
 @Table(name = "products")
 
@@ -41,8 +39,6 @@ public class ProductModel {
 
     public ProductModel() {
     }
-
-
 
     public ProductModel(Long productId, String name, double price, String description, CategoryModel category, ImageModel image) {
         this.productId = productId;
