@@ -37,6 +37,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import org.apache.logging.log4j.Logger;
 import java.util.Objects;
@@ -56,11 +59,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @GetMapping(value = "/getAllProducts")
-//    public List<ProductModel> getAllProducts(){
-//        return productService.getAllProducts();
-//    }
-
     //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
     public ResponseEntity<Object> Get() {
@@ -69,7 +67,7 @@ public class ProductController {
             if (products.size() > 0){
                 return ResponseHandler.generateResponse("Successfully retrieved products!", HttpStatus.OK, products);
             } else {
-                return ResponseHandler.generateResponse("No products found! Add a new product!", HttpStatus.OK, products);
+                return ResponseHandler.generateResponse("No products found! Add a new product!", HttpStatus.NOT_FOUND, products);
             }
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -151,8 +149,6 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-    private static final Logger logger = LogManager.getLogger(ProductController.class);
 
 
     //searching and filtering
