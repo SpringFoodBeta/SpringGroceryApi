@@ -152,7 +152,7 @@ public class ProductController {
             List<ProductModel> searchResults = productService.findByCategory(productName, categoryName);
 
             if (searchResults.isEmpty()) {
-                return ResponseHandler.generateResponse("Not Found!!!", HttpStatus.NOT_FOUND, searchResults);
+                return ResponseHandler.generateResponse("Not Found!!!", HttpStatus.NOT_FOUND, null);
             }
             return ResponseHandler.generateResponse("Search Found!!!", HttpStatus.OK, searchResults);
             //return ResponseEntity.ok(products);
