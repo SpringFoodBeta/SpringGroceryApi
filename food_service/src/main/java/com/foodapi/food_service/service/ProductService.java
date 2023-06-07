@@ -1,5 +1,6 @@
 package com.foodapi.food_service.service;
 
+import com.foodapi.food_service.exception.ProductAPIRequestException;
 import com.foodapi.food_service.model.ProductModel;
 
 import com.foodapi.food_service.repo.ProductRepo;
@@ -59,8 +60,14 @@ public class ProductService implements ProductServiceRepo{
     }
 
     //search and filter
-    public List<ProductModel> findByCategory(String productName,  String categoryName){
-        return productRepository.findByCategory(productName, categoryName);
+    public List<ProductModel> findByCategory(String productName,  String categoryName) {
+        try {
+            return productRepository.findByCategory(productName, categoryName);
+        }catch(Exception ex)
+        {
+            throw new ProductAPIRequestException("Error while retrieving products by category:" + ex.getMessage());
+        }
+
     }
 
 }

@@ -25,6 +25,7 @@ package com.foodapi.food_service.controller;
 //
 //}
 
+import com.foodapi.food_service.exception.ProductAPIRequestException;
 import com.foodapi.food_service.model.CategoryModel;
 import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.repo.ProductRepo;
@@ -38,7 +39,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.ErrorManager;
 
 //inject service into controller
 
@@ -92,9 +95,18 @@ public class ProductController {
     @GetMapping("/search")
     public List<ProductModel> findByCategory(@RequestParam(required = false) String productName,
                                                       @RequestParam(required = false) String categoryName){
-        List<ProductModel> products = productService.findByCategory(productName, categoryName);
+        try {
+            List<ProductModel> products = productService.findByCategory(productName, categoryName);
+            return products;
+        }catch(ProductAPIRequestException ex)
+        {
+            String errorMessage = "Error retrieving products: " + ex.getMessage();
 
-        return products;
+
+            return  Collections.singletonList(new ProductModel(errorMessage));
+        }
+
+
     }
 }
 
