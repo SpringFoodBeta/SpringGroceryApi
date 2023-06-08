@@ -41,8 +41,6 @@ public class ProductService implements ProductServiceRepo{
     }
 
     public ProductModel createProduct(ProductModel product) {
-
-
         // Additional logic/validation can be implemented here
 
         try {
@@ -74,11 +72,10 @@ public class ProductService implements ProductServiceRepo{
     public List<ProductModel> findByCategory(String productName,  String categoryName) {
         try {
             return productRepository.findByCategory(productName, categoryName);
-        }catch(Exception ex)
-        {
-            throw new ProductAPIRequestException("Error while retrieving products by category:" + ex.getMessage());
+        } catch (Exception ex) {
+            // Handle the specific exception thrown by the repository
+            throw new ProductAPIRequestException("Error while retrieving products by category: " + ex.getMessage());
         }
-
     }
 
 }

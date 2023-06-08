@@ -31,6 +31,7 @@ import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.response.ResponseHandler;
 import com.foodapi.food_service.service.ProductService;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/products")
-
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -75,25 +76,27 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object>  findByCategory(@RequestParam(required = false) String productName,
-                                                  @RequestParam(required = false) String categoryName){
+    public ResponseEntity<Object> findByCategory(@RequestParam(required = false) String productName, @RequestParam(required = false) String categoryName
+    ) {
         try {
-            List<ProductModel> products = productService.findByCategory(productName, categoryName);
-            if(productName != null && categoryName != null && !products.isEmpty())
-            {
-                return ResponseHandler.generateResponse("We have the product that you have mentioned", HttpStatus.OK, products);
+                List<ProductModel> products = productService.findByCategory(productName, categoryName);
+                if(productName==null && categoryName==null)
+                {
+                    return ResponseHandler.generateResponse("No product name found or category name is found", HttpStatus.NOT_FOUND, null);
+                }
+                else if (products.isEmpty()) {
+                    return ResponseHandler.generateResponse("Both product and category are not found", HttpStatus.NOT_FOUND, null);
+                } else {
+                    return ResponseHandler.generateResponse("We have the product that you have mentioned", HttpStatus.OK, products);
 
-            }else {
-                return ResponseHandler.generateResponse("Error while retrieving products by category:", HttpStatus.OK, null);
 
-            }
-        }catch(Exception ex)
-        {
+                }
+        } catch (Exception ex)
+    {
             return ResponseHandler.generateResponse(ex.getMessage(), HttpStatus.MULTI_STATUS, null);
-
         }
-
     }
+
 
     // GET product by id - (view one by fetching it with its ID)
     @GetMapping(value = "/{id}")
