@@ -70,7 +70,9 @@ public class ProductController {
         try {
             ProductModel product = productService.getProductById(id);
             return ResponseHandler.generateResponse("Your data is retrieved data", HttpStatus.OK, product);
-        }catch (Exception e) {
+
+            }
+        catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 //            throw new ProductAPIRequestException("Sorry dear cannot find that product");
 
