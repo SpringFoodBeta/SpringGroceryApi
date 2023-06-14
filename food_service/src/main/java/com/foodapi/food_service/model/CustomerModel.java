@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 
 @Data
 @Builder
@@ -15,18 +19,40 @@ public class CustomerModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
 
-    @Column (name = "name")
-    private String name;
+    @Column (name = "firstName")
+    private @NotBlank String firstName;
 
-    @Column (name = "contact_no")
-    private String contact_no;
+    @Column (name = "lastName")
+    private @NotBlank String lastName;
 
-   @Column (name = "email")
-    private String email;
+    @Column (name = "email")
+    private @NotBlank String email;
+
+    @Column (name = "contactNo")
+    private @NotBlank String contactNo;
+
+    @Min(8)
+    @Max(32)
+    @Column (name = "password")
+    private @NotBlank String password;
+
+    @Column (name = "address")
+    private @NotBlank String address;
 
     //Default Constructor
     public CustomerModel() {
 
+    }
+
+    //Parameterised Constructor
+    public CustomerModel(@NotBlank int customerId, @NotBlank String firstName,@NotBlank String lastName,@NotBlank String email, @NotBlank String contactNo, @NotBlank String password, @NotBlank String address) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.contactNo = contactNo;
+        this.password = password;
+        this.address = address;
     }
 
     public int getCustomerId() {
@@ -37,20 +63,20 @@ public class CustomerModel {
         this.customerId = customerId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getContact_no() {
-        return contact_no;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setContact_no(String contact_no) {
-        this.contact_no = contact_no;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -61,14 +87,28 @@ public class CustomerModel {
         this.email = email;
     }
 
-    //Parameterised Constructor
-    public CustomerModel(int customerId, String name, String contact_no, String email){
+    public String getContactNo() {
+        return contactNo;
+    }
 
-        this.customerId = customerId;
-        this.name = name;
-        this.contact_no = contact_no;
-        this.email = email;
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }
