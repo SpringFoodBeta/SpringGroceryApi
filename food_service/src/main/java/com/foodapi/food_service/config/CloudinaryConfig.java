@@ -1,7 +1,6 @@
-package com.foodapi.image_service.config;
+package com.foodapi.food_service.config;
 
 import com.cloudinary.Cloudinary;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 @Configuration
 public class CloudinaryConfig {
-
     @Value("${cloud.name}")
     private String cloudName;
 
