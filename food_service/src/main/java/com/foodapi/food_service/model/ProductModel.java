@@ -26,27 +26,31 @@ public class ProductModel {
     @NotNull(message = "Description cannot be empty!")
     private String description;
 
+    @Column(name = "imageUrl")
+    @NotBlank(message = "Image url is required")
+    private String imageUrl;
+
     //updates the table to get the latest data
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private ImageModel image;
+
 
      //Constructors - to initialize the variables or to assign an initial value
 
     public ProductModel() {
     }
 
-    public ProductModel(Long productId, String name, double price, String description, CategoryModel category, ImageModel image) {
+
+
+    public ProductModel(Long productId, String name, double price, String description, String imageUrl, CategoryModel category) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.description = description;
+        this.imageUrl=imageUrl;
         this.category = category;
-        this.image = image;
     }
 
     public ProductModel(String errorMessage) {
@@ -96,11 +100,11 @@ public class ProductModel {
         this.category = category;
     }
 
-    public ImageModel getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(ImageModel image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

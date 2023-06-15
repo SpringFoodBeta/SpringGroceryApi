@@ -24,14 +24,12 @@ package com.foodapi.food_service.controller;
 //
 //
 //}
-import com.foodapi.food_service.exception.ProductAPIRequestException;
-import com.foodapi.food_service.model.CategoryModel;
 
 import com.foodapi.food_service.model.ProductModel;
 import com.foodapi.food_service.response.ResponseHandler;
+import com.foodapi.food_service.service.ProductServiceImp;
 import com.foodapi.food_service.service.ProductService;
 import lombok.NonNull;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +37,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.validation.constraints.NotBlank;
-import java.math.BigDecimal;
 import java.util.List;
-import org.apache.logging.log4j.Logger;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Objects;
 
 
@@ -53,18 +51,18 @@ import java.util.Objects;
 
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImp productServiceImp;
 
     @Autowired //This allows the controller to use the methods provided by the service.
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductServiceImp productServiceImp) {
+        this.productServiceImp = productServiceImp;
     }
 
     //GET all products - (view all products)
     @GetMapping(value = "/getAllProducts")
     public ResponseEntity<Object> getAllProducts() {
         try {
-            List<ProductModel> products = productService.getAllProducts();
+            List<ProductModel> products = productServiceImp.getAllProducts();
             if (products.size() > 0){
                 return ResponseHandler.generateResponse("Successfully retrieved products!", HttpStatus.OK, products);
             } else {
@@ -79,7 +77,7 @@ public class ProductController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id) {
         try {
-            ProductModel product = productService.getProductById(id);
+            ProductModel product = productServiceImp.getProductById(id);
             return ResponseHandler.generateResponse("Successfully retrieved product!", HttpStatus.OK, product);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -111,6 +109,11 @@ public class ProductController {
                 throw new IllegalArgumentException("Required!!! Price field cannot be empty!");
             }
 
+            if (Objects.isNull(product.getImageUrl()) ) {
+                throw new IllegalArgumentException("Required!!! image field cannot be empty!");
+            }
+
+
             // Validate that the price attribute is a double
 //            if (product.getPrice().getClass() != Double.class) {
 //                throw new IllegalArgumentException("Price must be a valid double value.");
@@ -122,7 +125,7 @@ public class ProductController {
             // Set the converted price value back to the product object
             product.setPrice(price);
 
-            ProductModel prod = productService.createProduct(product);
+            ProductModel prod = productServiceImp.createProduct(product);
             if (prod != null) {
                 return ResponseHandler.generateResponse("Successfully added product!", HttpStatus.OK, prod);
             } else {
@@ -138,14 +141,14 @@ public class ProductController {
     // PUT - (update a product by an ID)
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
-        ProductModel updatedProduct = productService.updateProduct(id, product);
+        ProductModel updatedProduct = productServiceImp.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
     // DELETE - (delete a product by an ID)
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
+        productServiceImp.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -154,7 +157,7 @@ public class ProductController {
     public ResponseEntity<Object> findByCategory(@RequestParam(required = false) String productName,
                                                              @RequestParam(required = false) String categoryName) {
         try {
-            List<ProductModel> searchResults = productService.findByCategory(productName, categoryName);
+            List<ProductModel> searchResults = productServiceImp.findByCategory(productName, categoryName);
 
             if (searchResults.isEmpty()) {
                 return ResponseHandler.generateResponse("Not Found!!!", HttpStatus.NOT_FOUND, null);
@@ -165,6 +168,24 @@ public class ProductController {
             // Handle the exception and return an appropriate response
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
+    }
+
+
+    // Constructor injection
+
+    // POST end point to add the image to the database
+    @PostMapping("/addImage")
+    public String saveImage(@RequestBody ProductModel image){
+        return productServiceImp.saveImage(image);
+    }
+
+    // POST endPoint to upload the images to cloudinary
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("image") MultipartFile file,
+                              ProductModel image){
+
+        productServiceImp.uploadFile(image, file);
+        return "image uploaded successfully";
     }
 
 }
